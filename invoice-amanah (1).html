@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pembuat Invoice - Amanah Solution</title>
+<style>
+:root{--bg:#eceef5;--ink:#15151f;--panel:#fff;--line:#d5d8e6;--brand:#2314a6;--dark:#0d0640;--soft:#f0f4ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14151c;--ink:#eee;--panel:#222431;--line:#3a3d52}}
+:root[data-theme="dark"]{--bg:#14151c;--ink:#eee;--panel:#222431;--line:#3a3d52}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Poppins",system-ui,sans-serif}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px}
+.bar button{font:600 14px inherit;font-family:inherit;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.bar .pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+.wa{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:0 12px 12px}.wa input{font:inherit;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);width:230px}.wa button{font:600 14px inherit;font-family:inherit;padding:10px 16px;border-radius:8px;border:0;background:#1fa855;color:#fff;cursor:pointer}
+.hint{text-align:center;font-size:13px;opacity:.75;margin:0 12px 10px}
+#wrap{display:flex;justify-content:center;overflow:hidden}
+.sheet{width:210mm;height:297mm;background:#fff;color:#111;position:relative;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.2);flex:none}
+.sheet input,.sheet textarea{font:inherit;color:inherit;background:transparent;border:1px dashed #c9cde6;border-radius:4px;padding:2px 4px;width:100%;outline:none}
+.sheet input:focus,.sheet textarea:focus{border-color:var(--brand);background:#f6f7ff}
+.sheet textarea{resize:none}
+.c1{position:absolute;top:0;left:0;width:100%;height:50px;background:linear-gradient(90deg,#2314a6,#0d0640);clip-path:polygon(0 0,100% 0,92% 100%,0 55%)}
+.c2{position:absolute;bottom:0;left:0;width:36%;height:40px;background:linear-gradient(90deg,#0d0640,#2314a6);clip-path:polygon(0 30%,100% 100%,0 100%)}
+.hd{position:absolute;top:80px;left:60px;right:60px;display:flex;justify-content:space-between;gap:20px}
+.co{width:300px;color:var(--brand)}
+.co .nm{font:500 26px/1.1 inherit;letter-spacing:.25em;color:var(--brand);font-weight:500}
+.co input,.co textarea{color:var(--brand);font-size:13px;margin-top:3px}
+.co .nm{font-size:24px;letter-spacing:.2em}
+.inv{width:300px;text-align:left}
+.inv h1{margin:0 0 8px;font-size:52px;color:var(--brand);line-height:1}
+.to{border:2px solid #111;border-radius:16px;padding:10px 14px;height:128px}
+.to b{font-weight:500}
+.meta{position:absolute;top:290px;left:50px;right:50px;border:2px solid var(--dark);padding:8px 14px;display:flex;justify-content:space-between;gap:12px;font-weight:600;font-size:14px;align-items:center}
+.meta label{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.meta input{width:130px;font-weight:600}
+table{position:absolute;top:372px;left:50px;width:calc(100% - 100px);border-collapse:separate;border-spacing:0 8px}
+th{background:var(--brand);color:#fff;height:46px;font-weight:600}
+td{background:var(--soft);height:44px;padding:0 8px}
+td.n{text-align:center;width:50px}
+td.t{width:200px}
+td.x{background:none;width:26px;padding:0}
+.x button{border:0;background:none;color:#c33;font-size:18px;cursor:pointer}
+.add{position:absolute;left:50px;top:690px;font:600 12px inherit;font-family:inherit;border:1px dashed var(--brand);color:var(--brand);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer}
+.sum{position:absolute;top:722px;right:50px;width:300px}
+.sum div{display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;margin-bottom:8px;background:var(--soft);font-weight:600;font-size:13px}
+.sum span:first-child{width:90px}
+.sum .tot{background:var(--brand);color:#fff;font-size:15px}
+.sum input{text-align:left}
+.pay{position:absolute;left:60px;top:895px;width:430px}
+.pay h3{margin:0 0 6px;font-size:15px;border-bottom:5px solid var(--dark);padding-bottom:4px;width:260px}
+.pay .r{display:flex;align-items:center;gap:4px;margin-bottom:3px}.pay .r input{font-size:13px}.pay .r input:first-child{width:118px}.pay .r i{font-style:normal;width:6px;text-align:center}
+.ty{position:absolute;bottom:16px;width:100%;text-align:center;color:var(--brand);font-size:18px}
+.ty input{width:380px;text-align:center;color:var(--brand);font-size:18px}
+.cap input,.cap textarea{border-color:transparent!important;background:transparent!important}.cap ::placeholder{color:transparent}.cap .add,.cap .x{display:none!important}
+@media print{
+@page{size:A4;margin:0}
+html,body{margin:0!important;padding:0!important;height:auto!important;min-height:0!important;background:#fff}:root{padding:0!important}.bar,.wa,.hint,.add,.x{display:none!important}
+#wrap{display:block;zoom:1!important}
+.sheet{box-shadow:none;margin:0;height:295.5mm;max-height:295.5mm;break-after:avoid;page-break-after:avoid;break-inside:avoid}
+.sheet input,.sheet textarea{border-color:transparent!important;background:transparent!important}
+table{border-spacing:0 8px}
+*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="bar">
+ <button class="pri" onclick="window.print()">Cetak / Simpan PDF</button>
+ <button onclick="baru()">Invoice baru</button>
+ <button onclick="resetAll()">Reset ke awal</button>
+</div>
+<div class="wa"><input data-k="wa" type="tel" inputmode="tel" placeholder="No. WhatsApp pelanggan, mis. 0812xxxx" aria-label="Nomor WhatsApp pelanggan"><button onclick="kirimWA()">Kirim lewat WhatsApp</button><button id="bs" onclick="bagikanPDF()" style="background:var(--brand)">Bagikan PDF</button></div>
+<p class="hint">Klik teks mana saja di invoice untuk mengubahnya. Data tersimpan otomatis di perangkat ini.</p>
+<div id="wrap">
+<div class="sheet" id="sheet">
+ <div class="c1"></div><div class="c2"></div>
+ <div class="hd">
+  <div class="co">
+   <input class="nm" data-k="co" aria-label="Nama usaha">
+   <input data-k="addr" aria-label="Alamat">
+   <input data-k="tel" aria-label="Telepon">
+   <input data-k="mail" aria-label="Email">
+  </div>
+  <div class="inv">
+   <h1>INVOICE</h1>
+   <div class="to"><b>BILL TO :</b><textarea data-k="to" rows="3" aria-label="Nama pelanggan" placeholder="Nama pelanggan"></textarea></div>
+  </div>
+ </div>
+ <div class="meta">
+  <label>INVOICE # <input data-k="no" aria-label="Nomor invoice"></label>
+  <label>INVOICE DATE: <input type="text" data-k="date" aria-label="Tanggal"></label>
+ </div>
+ <table>
+  <thead><tr><th>NO</th><th>DESCRIPTION</th><th>TOTAL</th><th style="background:none"></th></tr></thead>
+  <tbody id="rows"></tbody>
+ </table>
+ <button class="add" onclick="addRow()">+ Tambah barang / jasa</button>
+ <div class="sum">
+  <div><span>SUB-TOTAL</span><span id="sub"></span></div>
+  <div><span>DISCOUNT</span><input id="disc" inputmode="numeric" placeholder="0" aria-label="Diskon"></div>
+  <div class="tot"><span>Total Due</span><span id="tot"></span></div>
+ </div>
+ <div class="pay">
+  <h3>PAYMENT METHOD</h3>
+  <div id="bank"></div><input data-k="note" aria-label="Catatan pembayaran" style="margin-top:6px;font-size:13px">
+ </div>
+ <div class="ty"><input data-k="ty" aria-label="Penutup"></div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+var DEF={co:"AMANAH SOLUTION",addr:"Nglarangan, Teras, Boyolali",tel:"0895 - 3639- 50021",mail:"nandailham32@gmail.com",to:"",no:"1029",date:"",
+bank:[["BANK MANDIRI","1380025096723"],["BANK BCA","1430390216"],["BANK BNI","2097865300"],["Account Name","ILHAM DONINTA SAKTI"]],note:"Mohon Konfirmasi setelah melakukan pembayaran",
+ty:"THANK YOU FOR YOUR BUSINESS",wa:"",disc:0,items:[{d:"CUCI AC",p:75000}]};
+var S;
+function today(){var d=new Date();return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+"/"+d.getFullYear()}
+function load(){try{var r=localStorage.getItem("amanah-invoice");if(r){var o=JSON.parse(r);if(!o.bank){o.bank=JSON.parse(JSON.stringify(DEF.bank));o.note=DEF.note}return o}}catch(e){}var c=JSON.parse(JSON.stringify(DEF));c.date=today();return c}
+function save(){try{localStorage.setItem("amanah-invoice",JSON.stringify(S))}catch(e){}}
+function rp(n){return "Rp. "+(Math.round(n)||0).toLocaleString("id-ID")}
+function num(s){return parseInt(String(s).replace(/\D/g,""),10)||0}
+function calc(){var sub=S.items.reduce(function(a,i){return a+(i.p||0)},0);
+ document.getElementById("sub").textContent=rp(sub);
+ document.getElementById("tot").textContent=rp(Math.max(0,sub-(S.disc||0)))}
+function render(){
+ document.querySelectorAll("[data-k]").forEach(function(el){el.value=S[el.dataset.k]||""});
+ var d=document.getElementById("disc");d.value=S.disc?S.disc.toLocaleString("id-ID"):"";
+ var bh="";S.bank.forEach(function(b,i){bh+='<div class="r"><input data-b="'+i+'" data-bf="0" aria-label="Nama bank" value="'+b[0].replace(/"/g,"&quot;")+'"><i>:</i><input data-b="'+i+'" data-bf="1" inputmode="text" aria-label="Nomor rekening" value="'+b[1].replace(/"/g,"&quot;")+'"></div>'});
+ document.getElementById("bank").innerHTML=bh;
+ var h="";S.items.forEach(function(it,i){
+  h+='<tr><td class="n">'+(i+1)+'</td><td><input data-i="'+i+'" data-f="d" aria-label="Deskripsi" value="'+(it.d||"").replace(/"/g,"&quot;")+'"></td>'+
+  '<td class="t"><input data-i="'+i+'" data-f="p" inputmode="numeric" aria-label="Harga" placeholder="0" value="'+(it.p?"Rp. "+it.p.toLocaleString("id-ID"):"")+'"></td>'+
+  '<td class="x"><button onclick="delRow('+i+')" aria-label="Hapus baris">&times;</button></td></tr>'});
+ document.getElementById("rows").innerHTML=h;calc();fit()}
+function addRow(){if(S.items.length>=5){alert("Maksimal 5 baris agar muat di satu halaman.");return}S.items.push({d:"",p:0});save();render()}
+function delRow(i){S.items.splice(i,1);save();render()}
+function baru(){if(!confirm("Buat invoice baru? Nomor naik 1, pelanggan dan barang dikosongkan."))return;
+ S.no=String((parseInt(S.no,10)||0)+1);S.to="";S.wa="";S.date=today();S.disc=0;S.items=[{d:"",p:0}];save();render()}
+function resetAll(){if(!confirm("Kembalikan semua isi ke contoh awal?"))return;try{localStorage.removeItem("amanah-invoice")}catch(e){}S=load();render()}
+document.addEventListener("input",function(e){var t=e.target;
+ if(t.dataset.k){S[t.dataset.k]=t.value}
+ else if(t.id==="disc"){S.disc=num(t.value);calc()}
+ else if(t.dataset.b!==undefined){S.bank[t.dataset.b][t.dataset.bf]=t.value}
+ else if(t.dataset.i){var it=S.items[t.dataset.i];if(t.dataset.f==="d")it.d=t.value;else it.p=num(t.value);calc()}
+ save()});
+document.addEventListener("focusout",function(e){var t=e.target;
+ if(t.id==="disc"){t.value=S.disc?S.disc.toLocaleString("id-ID"):""}
+ else if(t.dataset.f==="p"){t.value=S.items[t.dataset.i].p?"Rp. "+S.items[t.dataset.i].p.toLocaleString("id-ID"):""}});
+function pesan(){
+ var sub=S.items.reduce(function(a,i){return a+(i.p||0)},0),tot=Math.max(0,sub-(S.disc||0));
+ var nama=(S.to||"").split("\n")[0].trim();
+ var m="Halo"+(nama?" "+nama:"")+", berikut invoice dari "+S.co+":\n\nInvoice # "+S.no+"\nTanggal: "+S.date+"\n\n";
+ S.items.forEach(function(i){if(i.d||i.p)m+="- "+(i.d||"-")+": "+rp(i.p)+"\n"});
+ if(S.disc)m+="Diskon: "+rp(S.disc)+"\n";
+ m+="\n*Total: "+rp(tot)+"*\n\nPembayaran:\n"+S.bank.map(function(b){return b[0]+" : "+b[1]}).join("\n")+"\n"+S.note+"\n\n"+S.ty;
+ return m}
+function kirimWA(){
+ var n=String(S.wa||"").replace(/\D/g,"");
+ if(n.length<8){alert("Isi nomor WhatsApp pelanggan dulu.");return}
+ if(n.indexOf("62")===0){}else if(n.charAt(0)==="0"){n="62"+n.slice(1)}else if(n.charAt(0)==="8"){n="62"+n}
+ var m=pesan();
+ var a=document.createElement("a");a.href="https://wa.me/"+n+"?text="+encodeURIComponent(m);a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove()}
+function buatPDF(){
+ var P=new jspdf.jsPDF({unit:"mm",format:"a4"}),k=210/794,BR=[35,20,166],DK=[13,6,64],SO=[240,244,255],KB=[17,17,17],WH=[255,255,255];
+ var R=function(x,y,w,h,c){P.setFillColor(c[0],c[1],c[2]);P.rect(x*k,y*k,w*k,h*k,"F")};
+ var T=function(t,x,y,px,c,bold,o){P.setFont("helvetica",bold?"bold":"normal");P.setFontSize(px*0.75);P.setTextColor(c[0],c[1],c[2]);P.text(String(t),x*k,y*k,o||{})};
+ var one=function(t,w,px,bold){P.setFont("helvetica",bold?"bold":"normal");P.setFontSize(px*0.75);var l=P.splitTextToSize(String(t||""),w*k)[0]||"";return l.length<String(t||"").length?l.replace(/\s+$/,"")+"...":l};
+ var sub=S.items.reduce(function(a,i){return a+(i.p||0)},0),tot=Math.max(0,sub-(S.disc||0));
+ P.setFillColor(BR[0],BR[1],BR[2]);
+ P.lines([[794*k,0],[-64*k,50*k],[-730*k,-22.5*k]],0,0,[1,1],"F",true);
+ P.setFillColor(DK[0],DK[1],DK[2]);
+ P.lines([[286*k,28*k],[-286*k,0]],0,1095*k,[1,1],"F",true);
+ T(S.co,64,106,22,BR,false,{charSpace:0.12*22*k});
+ T(S.addr,64,134,13,BR);T(S.tel,64,161,13,BR);T(S.mail,64,188,13,BR);
+ T("INVOICE",434,122,52,BR,true);
+ P.setDrawColor(KB[0],KB[1],KB[2]);P.setLineWidth(2*k);P.roundedRect(434*k,140*k,300*k,128*k,16*k,16*k,"S");
+ T("BILL TO :",448,166,15,KB,false);
+ P.setFont("helvetica","normal");P.setFontSize(15*0.75);
+ P.splitTextToSize(String(S.to||""),270*k).slice(0,3).forEach(function(l,i){T(l,448,192+i*20,15,KB,false)});
+ P.setDrawColor(DK[0],DK[1],DK[2]);P.rect(50*k,290*k,694*k,44*k,"S");
+ T("INVOICE # "+S.no,64,317,14,KB,true);
+ T("INVOICE DATE: "+S.date,730,317,14,KB,true,{align:"right"});
+ R(50,380,668,46,BR);
+ T("NO",75,409,15,WH,true,{align:"center"});T("DESCRIPTION",309,409,15,WH,true,{align:"center"});T("TOTAL",618,409,15,WH,true,{align:"center"});
+ S.items.forEach(function(it,i){var y=434+52*i;R(50,y,668,44,SO);
+  T(i+1,75,y+28,15,KB,false,{align:"center"});
+  T(one(it.d,390,15,false),108,y+28,15,KB,false);
+  if(it.p)T(rp(it.p),530,y+28,15,KB,false)});
+ R(444,722,300,46,SO);R(444,776,300,46,SO);R(444,830,300,46,BR);
+ T("SUB-TOTAL",458,750,13,KB,true);T(rp(sub),556,750,13,KB,true);
+ T("DISCOUNT",458,804,13,KB,true);if(S.disc)T(rp(S.disc),556,804,13,KB,true);
+ T("Total Due",458,858,15,WH,true);T(rp(tot),556,858,15,WH,true);
+ T("PAYMENT METHOD",60,911,15,KB,true);R(60,920,260,5,DK);
+ S.bank.forEach(function(b,i){var y=931+27*i+17;T(b[0],65,y,13,KB,false);T(":",185,y,13,KB,true,{align:"center"});T(b[1],197,y,13,KB,false)});
+ T(S.note,65,931+27*4+6+17,13,KB,false);
+ T(S.ty,397,1097,18,BR,false,{align:"center"});
+ return P}
+async function bagikanPDF(){
+ if(!window.jspdf){alert("Pembuat PDF belum termuat. Cek koneksi internet lalu coba lagi.");return}
+ var btn=document.getElementById("bs");btn.disabled=true;btn.textContent="Membuat PDF...";
+ try{
+  var pdf=buatPDF();
+  var nama=(S.to||"").split("\n")[0].trim().replace(/[^\w ]+/g,"").trim().replace(/ +/g,"-");
+  var fn="Invoice-"+S.no+(nama?"-"+nama:"")+".pdf";
+  var f=new File([pdf.output("blob")],fn,{type:"application/pdf"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){
+   await navigator.share({files:[f],title:fn,text:"Invoice # "+S.no+" dari "+S.co})
+  }else{pdf.save(fn)}
+ }catch(e){if(e&&e.name!=="AbortError")alert("Gagal membuat atau membagikan PDF. Coba tombol Cetak / Simpan PDF.")}
+ finally{btn.disabled=false;btn.textContent="Bagikan PDF"}
+}
+function fit(){var w=document.getElementById("wrap"),s=document.getElementById("sheet");
+ var k=Math.min(1,(window.innerWidth-16)/s.offsetWidth);w.style.zoom=k}
+window.addEventListener("resize",fit);
+S=load();render();
+</script>
+</body>
+</html>
